@@ -20,6 +20,7 @@
   "dependencies": {
     "@google-cloud/local-auth": "^3.0.0",
     "@types/stampit": "^4.3.3",
+    "dayjs": "^1.11.9",
     "google-auth-library": "^9.0.0",
     "googleapis": "^126.0.1",
     "install": "^0.13.0",

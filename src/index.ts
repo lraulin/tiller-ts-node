@@ -57,7 +57,7 @@ async function getSheet(auth: OAuth2Client) {
   const sheets = google.sheets({ version: "v4", auth });
   const res = await sheets.spreadsheets.values.get({
     spreadsheetId: TILLER_SHEET_ID,
-    range: "Transactions!A2:E",
+    range: "Transactions",
   });
   const rows = res.data.values;
   if (!rows || rows.length === 0) {
