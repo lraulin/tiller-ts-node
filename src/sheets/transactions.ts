@@ -1,5 +1,3 @@
-import { Money, Currencies } from "ts-money";
-
 interface TillerTransactionRow {
   date: Date;
   description: string;
@@ -50,3 +48,5 @@ const parseRow = (row: string[]): TillerTransactionRow => {
     categorizedDate: categorizedDate == "" ? null : new Date(categorizedDate),
   };
 };
+
+export default { parseRow };
