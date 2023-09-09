@@ -41,7 +41,7 @@ async function authorize() {
   }
   client = await authenticate({
     scopes: "https://www.googleapis.com/auth/spreadsheets",
-    keyfilePath: path.join(__dirname, "oauth_client_secret.json"),
+    keyfilePath: path.join(__dirname, "credentials.json"),
   });
   if (client?.credentials) {
     await saveCredentials(client);
@@ -53,7 +53,7 @@ async function authorize() {
  * Prints the names and majors of students in a sample spreadsheet:
  * @param {google.auth.OAuth2} auth The authenticated Google OAuth client.
  */
-async function getSheet(auth: any) {
+async function getSheet(auth: OAuth2Client) {
   const sheets = google.sheets({ version: "v4", auth });
   const res = await sheets.spreadsheets.values.get({
     spreadsheetId: TILLER_SHEET_ID,
@@ -95,3 +95,8 @@ async function saveCredentials(client: OAuth2Client): Promise<void> {
   });
   await fs.writeFile(TOKEN_PATH, payload);
 }
+
+(async function main() {
+  const client = await authorize();
+  await getSheet(client);
+})();
