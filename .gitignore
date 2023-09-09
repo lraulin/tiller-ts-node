@@ -46,3 +46,4 @@ yarn.lock
 service_account.json
 token.json
 src/oauth_client_secret.json
+src/credentials.json

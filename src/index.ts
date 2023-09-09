@@ -17,20 +17,22 @@
 // [START sheets_quickstart]
 
 import { OAuth2Client } from "google-auth-library";
-import { TILLER_SHEET_ID } from "./.secrets";
 import { authenticate } from "@google-cloud/local-auth";
 import fs from "fs/promises";
 import { google } from "googleapis";
-import keys from "./oauth_client_secret.json";
+import keys from "./credentials.json";
 import path from "path";
 import process from "process";
 
-const SCOPES = ["https://www.googleapis.com/auth/spreadsheets"];
 const TOKEN_PATH = path.join(process.cwd(), "token.json");
+
+const TILLER_SHEET_ID = process.env.TILLER_SPREADSHEET_ID;
+if (!TILLER_SHEET_ID) {
+  throw new Error("TILLER_SHEET_ID not set");
+}
 
 /**
  * Load or request or authorization to call APIs.
- *
  */
 async function authorize() {
   let client = await loadSavedCredentialsIfExist();
@@ -38,7 +40,7 @@ async function authorize() {
     return client;
   }
   client = await authenticate({
-    scopes: SCOPES,
+    scopes: "https://www.googleapis.com/auth/spreadsheets",
     keyfilePath: path.join(__dirname, "oauth_client_secret.json"),
   });
   if (client?.credentials) {
@@ -49,14 +51,13 @@ async function authorize() {
 
 /**
  * Prints the names and majors of students in a sample spreadsheet:
- * @see https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
  * @param {google.auth.OAuth2} auth The authenticated Google OAuth client.
  */
-async function listMajors(auth: any) {
+async function getSheet(auth: any) {
   const sheets = google.sheets({ version: "v4", auth });
   const res = await sheets.spreadsheets.values.get({
     spreadsheetId: TILLER_SHEET_ID,
-    range: "DirectExpress!A2:E",
+    range: "Transactions!A2:E",
   });
   const rows = res.data.values;
   if (!rows || rows.length === 0) {
