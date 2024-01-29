@@ -1,4 +1,4 @@
-interface TillerTransactionRow {
+export interface TillerTransactionRow {
   date: Date;
   description: string;
   category: string;
@@ -17,35 +17,20 @@ interface TillerTransactionRow {
 const money = (s: string) => Number.parseFloat(s.replace(/[$,]/, ""));
 
 const parseRow = (row: string[]): TillerTransactionRow => {
-  const [
-    date,
-    description,
-    category,
-    amount,
-    account,
-    accountNumber,
-    institution,
-    transactionId,
-    accountId,
-    checkNumber,
-    fullDescription,
-    dateAdded,
-    categorizedDate,
-  ] = row;
   return {
-    date: new Date(date),
-    description,
-    category,
-    amount: money(amount),
-    account,
-    accountNumber,
-    institution,
-    transactionId,
-    accountId,
-    checkNumber: checkNumber === "" ? null : Number.parseInt(checkNumber),
-    fullDescription,
-    dateAdded: new Date(dateAdded),
-    categorizedDate: categorizedDate == "" ? null : new Date(categorizedDate),
+    date: new Date(row[0]),
+    description: row[1],
+    category: row[2],
+    amount: money(row[3]),
+    account: row[4],
+    accountNumber: row[5],
+    institution: row[6],
+    transactionId: row[9],
+    accountId: row[10],
+    checkNumber: row[11] === "" ? null : Number.parseInt(row[11], 10),
+    fullDescription: row[12],
+    dateAdded: new Date(row[13]),
+    categorizedDate: row[14] == "" ? null : new Date(row[14]),
   };
 };
 

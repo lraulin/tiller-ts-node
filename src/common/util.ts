@@ -4,3 +4,7 @@ export function ensureDefined<T>(value: T | undefined): T {
   }
   return value;
 }
+
+export function money(s: string) {
+  return Number.parseFloat(s.replace(/[$,]/, ""));
+}
